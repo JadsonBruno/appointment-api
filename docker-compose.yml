@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  api:
+    image: node:fermium-alpine
+    command: npm run dev:server
+    depends_on:
+      - postgres
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    networks:
+      - appointments_api
+  
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=gostack_gobarber
+    volumes:
+      - /private/var/lib/postgresql:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - appointments_api
+
+networks:
+  appointments_api:
